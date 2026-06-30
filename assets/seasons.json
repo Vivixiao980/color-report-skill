@@ -1,0 +1,399 @@
+{
+  "_readme": "四季 12 季型参考数据库。Claude 分析照片后选定季型，以此为基线生成个性化 analysis.json（颜色可微调、文案必须结合照片实际特征重写）。traits 数值供 metrics 参考：0~1。",
+  "light-spring": {
+    "name": "浅暖春", "en": "Light Spring", "group_en": "SPRING", "accent": "#E89B7B",
+    "traits": { "warmth": 0.66, "value": 0.78, "chroma": 0.62, "contrast": 0.32 },
+    "essence": "暖而浅、清透柔和，像春天清晨。怕厚重深沉色压住气色。",
+    "keywords": ["轻盈", "清透", "温柔", "鲜活"],
+    "palette": [
+      { "name": "奶油白", "hex": "#F6EFE2", "tag": "清透显白" },
+      { "name": "蜜桃粉", "hex": "#F5A9A0", "tag": "元气提色" },
+      { "name": "珊瑚粉", "hex": "#EF8E82", "tag": "气色神器" },
+      { "name": "浅杏色", "hex": "#F1C7A4", "tag": "温柔奶感" },
+      { "name": "浅薄荷", "hex": "#DDE8DA", "tag": "干净清爽" },
+      { "name": "浅天蓝", "hex": "#CFE4F5", "tag": "清爽减龄" },
+      { "name": "柔玫瑰", "hex": "#D89AA0", "tag": "温柔气质" },
+      { "name": "香槟米", "hex": "#E7D3B1", "tag": "精致暖光" },
+      { "name": "燕麦色", "hex": "#D8C7B1", "tag": "自然百搭" },
+      { "name": "奶茶色", "hex": "#D3B89D", "tag": "日常耐看" },
+      { "name": "浅灰蓝", "hex": "#B9CBD4", "tag": "通勤安全" },
+      { "name": "嫩芽绿", "hex": "#C7D9A8", "tag": "春日鲜活" }
+    ],
+    "avoid": [
+      { "name": "纯黑", "hex": "#1F1F1F", "reason": "压气色，脸色瞬间暗沉" },
+      { "name": "暗酒红", "hex": "#702733", "reason": "又深又冷，显老" },
+      { "name": "土橘", "hex": "#B06030", "reason": "放大黄气，显脏" },
+      { "name": "深灰", "hex": "#4C4A47", "reason": "显得没精神" }
+    ],
+    "lipstick": [
+      { "name": "蜜桃奶霜", "hex": "#EF9183" }, { "name": "珊瑚橘", "hex": "#E97A62" },
+      { "name": "杏裸粉", "hex": "#D99A85" }, { "name": "暖玫瑰", "hex": "#C97F82" }
+    ],
+    "metal": { "verdict": "金 · 香槟金", "short": "暖光金属衬暖皮", "coin": "radial-gradient(circle at 32% 28%, #F4E3B8, #D9B877 58%, #B8954E)", "desc": "亮金、香槟金、玫瑰金都加分；冷白银会显皮肤发灰。" },
+    "gems": [ { "name": "珍珠（奶白）", "hex": "#F4EDE0" }, { "name": "珊瑚石", "hex": "#E98873" }, { "name": "黄水晶", "hex": "#E8C76A" } ],
+    "hair": [ { "name": "蜜茶棕", "hex": "#7A5638" }, { "name": "奶咖棕", "hex": "#8A6648" }, { "name": "浅亚麻", "hex": "#A98C66" } ]
+  },
+  "warm-spring": {
+    "name": "暖春", "en": "Warm Spring", "group_en": "SPRING", "accent": "#E08A4E",
+    "traits": { "warmth": 0.86, "value": 0.6, "chroma": 0.66, "contrast": 0.46 },
+    "essence": "金调浓郁、鲜活有生命力，阳光感最强。怕冷灰和荧光冷色。",
+    "keywords": ["明媚", "鲜活", "暖意", "亲和"],
+    "palette": [
+      { "name": "芒果黄", "hex": "#F2B33D", "tag": "阳光主角色" },
+      { "name": "暖珊瑚", "hex": "#EA7E5B", "tag": "气色担当" },
+      { "name": "奶油黄", "hex": "#F4E3B0", "tag": "柔和打底" },
+      { "name": "草木绿", "hex": "#8FAE5D", "tag": "生命力" },
+      { "name": "驼金色", "hex": "#C8965A", "tag": "高级暖棕" },
+      { "name": "番茄红", "hex": "#D8553B", "tag": "点睛亮色" },
+      { "name": "象牙白", "hex": "#F3ECDB", "tag": "替代纯白" },
+      { "name": "暖松石", "hex": "#5BAFA4", "tag": "对比点缀" },
+      { "name": "焦糖浅", "hex": "#C98F62", "tag": "秋冬主力" },
+      { "name": "杏橙色", "hex": "#EFA96E", "tag": "活力日常" },
+      { "name": "暖卡其", "hex": "#B7A073", "tag": "通勤百搭" },
+      { "name": "蜜瓜橙", "hex": "#F4B98F", "tag": "温柔甜感" }
+    ],
+    "avoid": [
+      { "name": "冷灰", "hex": "#8E939B", "reason": "和金调皮肤打架，显病气" },
+      { "name": "纯黑", "hex": "#1F1F1F", "reason": "硬碰硬，吃掉脸上的暖光" },
+      { "name": "蓝粉色", "hex": "#D78CB1", "reason": "冷调粉显得肤色蜡黄" },
+      { "name": "藏蓝", "hex": "#23304E", "reason": "过冷过深，气色被压住" }
+    ],
+    "lipstick": [
+      { "name": "番茄色", "hex": "#D8553B" }, { "name": "珊瑚橙", "hex": "#E97A55" },
+      { "name": "焦糖杏", "hex": "#C97E5C" }, { "name": "暖棕红", "hex": "#B05A42" }
+    ],
+    "metal": { "verdict": "金 · 亮金", "short": "金属里的阳光", "coin": "radial-gradient(circle at 32% 28%, #F6E1A4, #DCB45E 58%, #B68B3C)", "desc": "亮金、黄金最衬金调皮；银色会显得人发灰。" },
+    "gems": [ { "name": "琥珀", "hex": "#C98A3F" }, { "name": "珊瑚石", "hex": "#E0705A" }, { "name": "绿松石", "hex": "#56ADA2" } ],
+    "hair": [ { "name": "焦糖棕", "hex": "#8A5A33" }, { "name": "金棕色", "hex": "#9A6B3D" }, { "name": "暖栗色", "hex": "#6E4528" } ]
+  },
+  "bright-spring": {
+    "name": "亮春", "en": "Bright Spring", "group_en": "SPRING", "accent": "#F07B54",
+    "traits": { "warmth": 0.68, "value": 0.62, "chroma": 0.85, "contrast": 0.66 },
+    "essence": "暖而亮、高饱和高清澈，自带聚光灯体质。怕灰扑扑的浊色。",
+    "keywords": ["明亮", "灵动", "聚光", "少年感"],
+    "palette": [
+      { "name": "亮珊瑚", "hex": "#F26B4F", "tag": "聚光主色" },
+      { "name": "水仙黄", "hex": "#F5C842", "tag": "提神亮色" },
+      { "name": "暖绿松", "hex": "#2FA8A0", "tag": "清澈对比" },
+      { "name": "亮草绿", "hex": "#7CB342", "tag": "鲜活生命力" },
+      { "name": "暖玫红", "hex": "#E0476B", "tag": "甜辣点睛" },
+      { "name": "象牙白", "hex": "#F5EEDC", "tag": "干净打底" },
+      { "name": "亮天蓝", "hex": "#4FA8DD", "tag": "清爽亮色" },
+      { "name": "橘子汽水", "hex": "#F59B4C", "tag": "元气日常" },
+      { "name": "浅暖驼", "hex": "#CBA06B", "tag": "中性过渡" },
+      { "name": "亮紫罗兰", "hex": "#8E6BBF", "tag": "意外加分" },
+      { "name": "苹果红", "hex": "#D9402F", "tag": "节日感" },
+      { "name": "暖海军蓝", "hex": "#2D4A77", "tag": "深色替黑" }
+    ],
+    "avoid": [
+      { "name": "雾灰紫", "hex": "#9B8FA0", "reason": "浊色让你的清澈感蒙灰" },
+      { "name": "燕麦灰", "hex": "#C3B8A6", "reason": "整个人「关灯」，没精神" },
+      { "name": "暗橄榄", "hex": "#5A5C42", "reason": "又浊又暗，气场全无" },
+      { "name": "灰粉色", "hex": "#C7A3A3", "reason": "脏粉显得脸色不干净" }
+    ],
+    "lipstick": [
+      { "name": "亮珊瑚", "hex": "#F26B4F" }, { "name": "暖玫红", "hex": "#DE4868" },
+      { "name": "橘红色", "hex": "#E85C3A" }, { "name": "水红色", "hex": "#E04A55" }
+    ],
+    "metal": { "verdict": "金为主 · 可亮银", "short": "亮面金属都行，避哑光", "coin": "radial-gradient(circle at 32% 28%, #F6E3AC, #DDB75F 58%, #BA8E3F)", "desc": "亮面抛光的金最好；亮银也能驾驭，避免做旧哑光。" },
+    "gems": [ { "name": "黄水晶", "hex": "#EBC75B" }, { "name": "绿松石", "hex": "#3AA8A0" }, { "name": "红玛瑙", "hex": "#C8453A" } ],
+    "hair": [ { "name": "暖棕黑", "hex": "#3E2B1F" }, { "name": "焦糖棕", "hex": "#8A5A33" }, { "name": "红棕色", "hex": "#7A4030" } ]
+  },
+  "light-summer": {
+    "name": "浅冷夏", "en": "Light Summer", "group_en": "SUMMER", "accent": "#A8C3DE",
+    "traits": { "warmth": 0.34, "value": 0.8, "chroma": 0.55, "contrast": 0.28 },
+    "essence": "冷而浅、像晨雾里的粉彩。怕大地色和过重的黑。",
+    "keywords": ["清淡", "柔雾", "干净", "初夏感"],
+    "palette": [
+      { "name": "雾霾蓝", "hex": "#A9C0D8", "tag": "本命主色" },
+      { "name": "贝壳粉", "hex": "#EFC3C8", "tag": "温柔显白" },
+      { "name": "薰衣草", "hex": "#C3B5D8", "tag": "气质点缀" },
+      { "name": "云朵白", "hex": "#F2F1EC", "tag": "干净打底" },
+      { "name": "浅灰蓝", "hex": "#B9C9D6", "tag": "通勤安全" },
+      { "name": "冷玫瑰", "hex": "#D9A0AE", "tag": "柔和气色" },
+      { "name": "薄荷灰绿", "hex": "#C2D6CC", "tag": "清爽透气" },
+      { "name": "浅莓粉", "hex": "#E2A9BC", "tag": "甜而不腻" },
+      { "name": "鸽子灰", "hex": "#C5C5C8", "tag": "替代黑色" },
+      { "name": "粉雾紫", "hex": "#D6C3DC", "tag": "浪漫感" },
+      { "name": "浅水蓝", "hex": "#BCD8E6", "tag": "夏日清凉" },
+      { "name": "燕麦灰米", "hex": "#DFD8CC", "tag": "中性日常" }
+    ],
+    "avoid": [
+      { "name": "土黄", "hex": "#B98A3F", "reason": "暖土色让冷皮发黄发脏" },
+      { "name": "砖红", "hex": "#A14A35", "reason": "重暖色压住清透感" },
+      { "name": "纯黑", "hex": "#1F1F1F", "reason": "对比过强，显得脸色苍白" },
+      { "name": "军绿", "hex": "#5A6244", "reason": "又暖又浊，气色全无" }
+    ],
+    "lipstick": [
+      { "name": "冷调裸粉", "hex": "#D89AA5" }, { "name": "玫瑰豆沙", "hex": "#C57F8E" },
+      { "name": "浅莓色", "hex": "#CC7491" }, { "name": "水粉色", "hex": "#E297A4" }
+    ],
+    "metal": { "verdict": "银 · 铂金", "short": "冷光金属衬冷皮", "coin": "radial-gradient(circle at 32% 28%, #F2F4F6, #C8CDD4 58%, #9CA3AD)", "desc": "亮银、铂金、白K金最衬；黄金会显得皮肤发黄。" },
+    "gems": [ { "name": "月光石", "hex": "#E8EAF0" }, { "name": "粉晶", "hex": "#EFC0C8" }, { "name": "海蓝宝", "hex": "#A8CCE0" } ],
+    "hair": [ { "name": "冷茶棕", "hex": "#5C4936" }, { "name": "亚麻灰棕", "hex": "#8A7660" }, { "name": "黑茶色", "hex": "#3A322B" } ]
+  },
+  "cool-summer": {
+    "name": "冷夏", "en": "Cool Summer", "group_en": "SUMMER", "accent": "#7E9EC4",
+    "traits": { "warmth": 0.16, "value": 0.6, "chroma": 0.58, "contrast": 0.44 },
+    "essence": "蓝调冷感、优雅清贵，像雨后蓝调时刻。怕橙黄系暖色。",
+    "keywords": ["清冷", "优雅", "蓝调", "书卷气"],
+    "palette": [
+      { "name": "雾蓝色", "hex": "#7E9EC4", "tag": "本命主色" },
+      { "name": "莓果粉", "hex": "#C76E8E", "tag": "冷调气色" },
+      { "name": "青灰蓝", "hex": "#5E7A99", "tag": "通勤主力" },
+      { "name": "冷玫瑰", "hex": "#C2899B", "tag": "温柔显白" },
+      { "name": "薰衣草紫", "hex": "#9D8EC2", "tag": "气质点缀" },
+      { "name": "云灰白", "hex": "#EFEFEA", "tag": "替代纯白" },
+      { "name": "葡萄紫", "hex": "#6E5A8E", "tag": "深色主力" },
+      { "name": "冷薄荷", "hex": "#A8CDC2", "tag": "清爽透气" },
+      { "name": "藏青蓝", "hex": "#2E4262", "tag": "深色替黑" },
+      { "name": "灰粉色", "hex": "#D8B4BC", "tag": "日常柔和" },
+      { "name": "天空蓝", "hex": "#94BBDD", "tag": "減龄清新" },
+      { "name": "石板灰", "hex": "#8E99A4", "tag": "中性百搭" }
+    ],
+    "avoid": [
+      { "name": "橘色", "hex": "#E0793A", "reason": "暖橙和蓝底皮严重相冲" },
+      { "name": "芥末黄", "hex": "#C2A03A", "reason": "显得脸色蜡黄疲惫" },
+      { "name": "焦糖棕", "hex": "#9A6238", "reason": "暖棕拉低整张脸的清贵感" },
+      { "name": "荧光绿", "hex": "#8FD43A", "reason": "又暖又艳，气质全失" }
+    ],
+    "lipstick": [
+      { "name": "玫瑰红", "hex": "#B85470" }, { "name": "莓果色", "hex": "#A8506E" },
+      { "name": "冷豆沙", "hex": "#B07684" }, { "name": "树莓粉", "hex": "#C45F7E" }
+    ],
+    "metal": { "verdict": "银 · 白金", "short": "冷光金属是标配", "coin": "radial-gradient(circle at 32% 28%, #F4F6F8, #C6CCD4 58%, #98A0AB)", "desc": "银、铂金、白K金；黄金会破坏蓝调皮的清冷感。" },
+    "gems": [ { "name": "蓝宝石", "hex": "#3A5A9C" }, { "name": "紫水晶", "hex": "#8A6CB0" }, { "name": "白珍珠", "hex": "#F0EFEA" } ],
+    "hair": [ { "name": "自然黑", "hex": "#26211E" }, { "name": "冷棕色", "hex": "#4A3B30" }, { "name": "蓝黑色", "hex": "#1E2228" } ]
+  },
+  "soft-summer": {
+    "name": "柔夏", "en": "Soft Summer", "group_en": "SUMMER", "accent": "#A294A8",
+    "traits": { "warmth": 0.38, "value": 0.58, "chroma": 0.3, "contrast": 0.34 },
+    "essence": "冷调灰雾感、低饱和高级脸。怕高饱和亮色和纯黑白。",
+    "keywords": ["雾感", "高级", "松弛", "莫兰迪"],
+    "palette": [
+      { "name": "灰玫瑰", "hex": "#C0989E", "tag": "本命温柔色" },
+      { "name": "鼠尾草绿", "hex": "#A8B5A0", "tag": "莫兰迪主力" },
+      { "name": "烟雾蓝", "hex": "#92A4B4", "tag": "通勤气质" },
+      { "name": "雾紫色", "hex": "#A698B4", "tag": "优雅点缀" },
+      { "name": "可可灰粉", "hex": "#C2A8A0", "tag": "日常显白" },
+      { "name": "燕麦灰", "hex": "#D5CCBE", "tag": "高级打底" },
+      { "name": "灰湖绿", "hex": "#8FAAA2", "tag": "清淡透气" },
+      { "name": "莓灰色", "hex": "#9E7484", "tag": "深色气色" },
+      { "name": "炭灰蓝", "hex": "#5E6A78", "tag": "深色替黑" },
+      { "name": "干枯玫瑰", "hex": "#B58490", "tag": "温柔主打" },
+      { "name": "雾霾灰", "hex": "#AEAFAC", "tag": "中性百搭" },
+      { "name": "灰豆绿", "hex": "#97A188", "tag": "松弛感" }
+    ],
+    "avoid": [
+      { "name": "荧光粉", "hex": "#F23A8E", "reason": "高饱和艳色喧宾夺主" },
+      { "name": "纯黑", "hex": "#1F1F1F", "reason": "对比过硬，破坏雾感" },
+      { "name": "亮橙", "hex": "#F08030", "reason": "又暖又艳，显得脸脏" },
+      { "name": "宝蓝", "hex": "#2A4ED0", "reason": "过于鲜艳清澈，人被衣服穿" }
+    ],
+    "lipstick": [
+      { "name": "干枯玫瑰", "hex": "#B07480" }, { "name": "灰豆沙", "hex": "#A8767E" },
+      { "name": "烟粉色", "hex": "#BE8490" }, { "name": "灰莓色", "hex": "#9E6478" }
+    ],
+    "metal": { "verdict": "哑光银 · 玫瑰金", "short": "低光泽金属最配雾感", "coin": "radial-gradient(circle at 32% 28%, #EDEEF0, #C4C6CA 58%, #9B9DA2)", "desc": "哑光银、做旧银、柔光玫瑰金；避免亮面黄金。" },
+    "gems": [ { "name": "灰珍珠", "hex": "#C9C5C8" }, { "name": "粉晶", "hex": "#E5BCC4" }, { "name": "灰月光", "hex": "#D8D9DE" } ],
+    "hair": [ { "name": "冷雾棕", "hex": "#54453A" }, { "name": "亚麻灰", "hex": "#857462" }, { "name": "黑茶色", "hex": "#382F28" } ]
+  },
+  "soft-autumn": {
+    "name": "柔秋", "en": "Soft Autumn", "group_en": "AUTUMN", "accent": "#C08F6A",
+    "traits": { "warmth": 0.62, "value": 0.56, "chroma": 0.3, "contrast": 0.36 },
+    "essence": "暖调奶咖感、低饱和温柔大地色。怕冷艳色和纯黑白。",
+    "keywords": ["奶咖", "温柔", "大地色", "松弛"],
+    "palette": [
+      { "name": "燕麦奶", "hex": "#DCCDB8", "tag": "高级打底" },
+      { "name": "奶咖色", "hex": "#B89878", "tag": "本命主色" },
+      { "name": "烟玫瑰", "hex": "#C29088", "tag": "温柔气色" },
+      { "name": "灰杏色", "hex": "#D4B294", "tag": "日常显白" },
+      { "name": "鼠尾草", "hex": "#9EA88E", "tag": "灰绿点缀" },
+      { "name": "驼色", "hex": "#BE9D74", "tag": "秋冬主力" },
+      { "name": "南瓜灰橘", "hex": "#C47F58", "tag": "暖意亮色" },
+      { "name": "可可棕", "hex": "#8A6650", "tag": "深色主力" },
+      { "name": "橄榄灰绿", "hex": "#85805C", "tag": "复古高级" },
+      { "name": "暖卡其", "hex": "#A9986F", "tag": "通勤百搭" },
+      { "name": "豆沙红", "hex": "#A86E66", "tag": "气色担当" },
+      { "name": "暖象牙", "hex": "#EFE5D2", "tag": "替代纯白" }
+    ],
+    "avoid": [
+      { "name": "荧光蓝", "hex": "#2A7EE0", "reason": "冷艳色和奶咖皮相冲" },
+      { "name": "纯黑", "hex": "#1F1F1F", "reason": "硬黑破坏柔和氛围" },
+      { "name": "亮玫红", "hex": "#E03A78", "reason": "冷调艳粉显得脸色暗" },
+      { "name": "冷灰", "hex": "#8E939B", "reason": "和暖皮互相拉低" }
+    ],
+    "lipstick": [
+      { "name": "豆沙色", "hex": "#B07060" }, { "name": "奶茶裸", "hex": "#BE8A72" },
+      { "name": "砖粉色", "hex": "#C0705C" }, { "name": "陶土色", "hex": "#A8604A" }
+    ],
+    "metal": { "verdict": "哑光金 · 古铜", "short": "做旧暖金属最对味", "coin": "radial-gradient(circle at 32% 28%, #EAD8AE, #C7A468 58%, #9A7A45)", "desc": "哑光金、古铜、黄铜；亮银太冷太锐。" },
+    "gems": [ { "name": "茶晶", "hex": "#8A6848" }, { "name": "琥珀", "hex": "#C08A45" }, { "name": "奶白珍珠", "hex": "#F0E8D8" } ],
+    "hair": [ { "name": "奶茶棕", "hex": "#8A6B4C" }, { "name": "亚麻棕", "hex": "#97805F" }, { "name": "深咖色", "hex": "#5A4332" } ]
+  },
+  "warm-autumn": {
+    "name": "暖秋", "en": "Warm Autumn", "group_en": "AUTUMN", "accent": "#B5703B",
+    "traits": { "warmth": 0.88, "value": 0.44, "chroma": 0.56, "contrast": 0.5 },
+    "essence": "金棕浓郁、复古醇厚，像深秋午后的阳光。怕冷色和粉嫩色。",
+    "keywords": ["醇厚", "复古", "金棕", "大女主"],
+    "palette": [
+      { "name": "焦糖色", "hex": "#B5703B", "tag": "本命主色" },
+      { "name": "铁锈红", "hex": "#A8472E", "tag": "复古气场" },
+      { "name": "芥末黄", "hex": "#C9A03A", "tag": "点睛亮色" },
+      { "name": "橄榄绿", "hex": "#6E703C", "tag": "高级主力" },
+      { "name": "南瓜色", "hex": "#C7763A", "tag": "暖意担当" },
+      { "name": "咖啡棕", "hex": "#6B4A32", "tag": "深色主力" },
+      { "name": "奶油驼", "hex": "#C8A87E", "tag": "日常打底" },
+      { "name": "砖红色", "hex": "#9E4E38", "tag": "气色神器" },
+      { "name": "墨绿色", "hex": "#3C5240", "tag": "深色替黑" },
+      { "name": "暖象牙", "hex": "#EFE3CC", "tag": "替代纯白" },
+      { "name": "琥珀棕", "hex": "#9A6B3A", "tag": "复古单品" },
+      { "name": "森林绿", "hex": "#4E6E3C", "tag": "撞色加分" }
+    ],
+    "avoid": [
+      { "name": "冰蓝", "hex": "#A8D4F0", "reason": "冷浅色显得气色蜡黄" },
+      { "name": "芭比粉", "hex": "#F068A8", "reason": "冷艳粉和金棕皮相冲" },
+      { "name": "纯白", "hex": "#FFFFFF", "reason": "过冷过亮，脸色发暗" },
+      { "name": "冷灰", "hex": "#8E939B", "reason": "灰冷色拉垮暖调气场" }
+    ],
+    "lipstick": [
+      { "name": "砖红色", "hex": "#A8472E" }, { "name": "枫叶红", "hex": "#B5503A" },
+      { "name": "焦糖棕", "hex": "#A06044" }, { "name": "陶土橘", "hex": "#BE5E3A" }
+    ],
+    "metal": { "verdict": "金 · 古铜金", "short": "浓金属配浓底色", "coin": "radial-gradient(circle at 32% 28%, #EFD9A0, #C9A050 58%, #95702E)", "desc": "黄金、古铜、做旧金最衬；银色显得人没精神。" },
+    "gems": [ { "name": "琥珀", "hex": "#C08A3F" }, { "name": "石榴石", "hex": "#8E3A2E" }, { "name": "虎眼石", "hex": "#9A6B35" } ],
+    "hair": [ { "name": "红棕色", "hex": "#73422C" }, { "name": "深焦糖", "hex": "#7E5230" }, { "name": "暖黑棕", "hex": "#42301F" } ]
+  },
+  "deep-autumn": {
+    "name": "深秋", "en": "Deep Autumn", "group_en": "AUTUMN", "accent": "#8A4A2F",
+    "traits": { "warmth": 0.72, "value": 0.26, "chroma": 0.52, "contrast": 0.66 },
+    "essence": "深邃浓郁的暖调，气场天花板。怕浅淡粉嫩色。",
+    "keywords": ["深邃", "气场", "浓郁", "高定感"],
+    "palette": [
+      { "name": "巧克力", "hex": "#5A3A28", "tag": "本命深色" },
+      { "name": "深砖红", "hex": "#8A3A2A", "tag": "复古气场" },
+      { "name": "墨绿色", "hex": "#2F4838", "tag": "深色主力" },
+      { "name": "深橄榄", "hex": "#55582F", "tag": "高级单品" },
+      { "name": "焦糖深", "hex": "#9A6238", "tag": "暖意过渡" },
+      { "name": "暗金色", "hex": "#A8853F", "tag": "点睛亮色" },
+      { "name": "深咖啡", "hex": "#42301F", "tag": "替代黑色" },
+      { "name": "酒红偏砖", "hex": "#7E3030", "tag": "晚宴气场" },
+      { "name": "暖米杏", "hex": "#D9C2A0", "tag": "浅色打底" },
+      { "name": "深松绿", "hex": "#1F4A42", "tag": "撞色加分" },
+      { "name": "铜棕色", "hex": "#8E5A35", "tag": "复古配饰" },
+      { "name": "南瓜深橘", "hex": "#B05E2E", "tag": "活力暖色" }
+    ],
+    "avoid": [
+      { "name": "婴儿粉", "hex": "#F5C3CE", "reason": "浅嫩色压不住深邃五官" },
+      { "name": "冰蓝", "hex": "#B8DCF0", "reason": "冷浅色显得气色发黄" },
+      { "name": "浅薰衣草", "hex": "#CFC0E2", "reason": "清浅冷紫和浓颜相冲" },
+      { "name": "荧光黄", "hex": "#E8F03A", "reason": "廉价感，破坏高定氛围" }
+    ],
+    "lipstick": [
+      { "name": "深砖红", "hex": "#8E3A2A" }, { "name": "枣泥色", "hex": "#7E3530" },
+      { "name": "脏橘色", "hex": "#A8542F" }, { "name": "红棕色", "hex": "#92402E" }
+    ],
+    "metal": { "verdict": "金 · 做旧金", "short": "深金属衬浓颜", "coin": "radial-gradient(circle at 32% 28%, #E8CC8E, #BC9240 58%, #876224)", "desc": "黄金、做旧金、古铜；细碎亮银压不住气场。" },
+    "gems": [ { "name": "石榴石", "hex": "#7E2A24" }, { "name": "祖母绿（深）", "hex": "#2A5E48" }, { "name": "琥珀", "hex": "#B5823A" } ],
+    "hair": [ { "name": "黑棕色", "hex": "#2E211A" }, { "name": "深红棕", "hex": "#5A3424" }, { "name": "冷感黑", "hex": "#211E1C" } ]
+  },
+  "bright-winter": {
+    "name": "亮冬", "en": "Bright Winter", "group_en": "WINTER", "accent": "#D6336C",
+    "traits": { "warmth": 0.28, "value": 0.5, "chroma": 0.88, "contrast": 0.78 },
+    "essence": "冷而亮、高饱和高对比，浓颜系聚光灯。怕灰浊和大地色。",
+    "keywords": ["明艳", "锋利", "聚光", "浓颜"],
+    "palette": [
+      { "name": "亮玫红", "hex": "#D6336C", "tag": "本命艳色" },
+      { "name": "宝石蓝", "hex": "#2A52BE", "tag": "气场主力" },
+      { "name": "祖母绿", "hex": "#0E8A6D", "tag": "高级亮色" },
+      { "name": "冰白色", "hex": "#F4F6F5", "tag": "干净打底" },
+      { "name": "正红色", "hex": "#C8202F", "tag": "节日气场" },
+      { "name": "亮紫色", "hex": "#7A3AB8", "tag": "个性点缀" },
+      { "name": "纯黑色", "hex": "#1A1A1A", "tag": "你能驾驭" },
+      { "name": "柠檬黄", "hex": "#F0DC3A", "tag": "撞色加分" },
+      { "name": "冰粉色", "hex": "#F0B8CC", "tag": "浅色点缀" },
+      { "name": "皇家紫", "hex": "#4E2A84", "tag": "晚宴主角" },
+      { "name": "钴蓝色", "hex": "#1F6EC8", "tag": "通勤亮色" },
+      { "name": "黑樱桃", "hex": "#5E1F33", "tag": "深色气场" }
+    ],
+    "avoid": [
+      { "name": "燕麦色", "hex": "#D5C8B2", "reason": "灰浊大地色让你「失焦」" },
+      { "name": "脏橘", "hex": "#B06A3A", "reason": "暖浊色和冷艳脸相冲" },
+      { "name": "军绿", "hex": "#6B6E48", "reason": "又暖又浊，气场减半" },
+      { "name": "雾霾灰粉", "hex": "#C2A4A4", "reason": "莫兰迪会把你穿没" }
+    ],
+    "lipstick": [
+      { "name": "亮玫红", "hex": "#D6336C" }, { "name": "正红色", "hex": "#C8202F" },
+      { "name": "覆盆子", "hex": "#B82A5E" }, { "name": "冷调樱桃", "hex": "#A81E3A" }
+    ],
+    "metal": { "verdict": "银 · 铂金", "short": "亮冷金属配冷艳", "coin": "radial-gradient(circle at 32% 28%, #F6F8FA, #C8CED6 58%, #99A2AE)", "desc": "亮银、铂金、白K金；黄金会拉低锋利感。" },
+    "gems": [ { "name": "红宝石", "hex": "#B81E3A" }, { "name": "蓝宝石", "hex": "#2A4A9E" }, { "name": "钻石/锆石", "hex": "#EDF2F6" } ],
+    "hair": [ { "name": "乌黑色", "hex": "#1C1A19" }, { "name": "蓝黑色", "hex": "#1E2230" }, { "name": "冷黑棕", "hex": "#2E2520" } ]
+  },
+  "cool-winter": {
+    "name": "冷冬", "en": "Cool Winter", "group_en": "WINTER", "accent": "#4A5FA5",
+    "traits": { "warmth": 0.12, "value": 0.4, "chroma": 0.7, "contrast": 0.7 },
+    "essence": "纯正蓝底冷调、清冽贵气。怕一切发黄发暖的颜色。",
+    "keywords": ["清冽", "贵气", "蓝调", "疏离感"],
+    "palette": [
+      { "name": "藏蓝色", "hex": "#1F2E55", "tag": "通勤主力" },
+      { "name": "纯白色", "hex": "#FAFAF8", "tag": "你能穿纯白" },
+      { "name": "冷酒红", "hex": "#7E1F3A", "tag": "晚宴气场" },
+      { "name": "宝蓝色", "hex": "#2A4AAE", "tag": "本命亮色" },
+      { "name": "冷粉色", "hex": "#E2A8C4", "tag": "浅色点缀" },
+      { "name": "纯黑色", "hex": "#1A1A1A", "tag": "气场标配" },
+      { "name": "紫红色", "hex": "#8E2A6B", "tag": "个性主角" },
+      { "name": "冰蓝色", "hex": "#BCD8EE", "tag": "清冽浅色" },
+      { "name": "炭灰色", "hex": "#3E4248", "tag": "深色百搭" },
+      { "name": "冷祖母绿", "hex": "#1A6B5A", "tag": "高级撞色" },
+      { "name": "雪青色", "hex": "#9A8EC8", "tag": "优雅点缀" },
+      { "name": "黑加仑", "hex": "#4A1F3E", "tag": "深色变化" }
+    ],
+    "avoid": [
+      { "name": "驼色", "hex": "#BE9D74", "reason": "暖驼让蓝底皮发黄" },
+      { "name": "橘红", "hex": "#D8602F", "reason": "最冲的暖色，气色全毁" },
+      { "name": "芥末黄", "hex": "#C2A03A", "reason": "显蜡黄显疲惫" },
+      { "name": "奶茶色", "hex": "#C9AE8E", "reason": "温吞暖色拉低清冽感" }
+    ],
+    "lipstick": [
+      { "name": "冷酒红", "hex": "#8E2438" }, { "name": "蓝调正红", "hex": "#BE1E3A" },
+      { "name": "梅子色", "hex": "#8A3A5E" }, { "name": "冷玫红", "hex": "#C42A6B" }
+    ],
+    "metal": { "verdict": "银 · 白金", "short": "冷光金属是本命", "coin": "radial-gradient(circle at 32% 28%, #F6F8FA, #C6CCD6 58%, #96A0AC)", "desc": "亮银、铂金、白K金、钻石感配饰；远离黄金古铜。" },
+    "gems": [ { "name": "蓝宝石", "hex": "#23409A" }, { "name": "紫晶", "hex": "#6E3A9E" }, { "name": "白珍珠", "hex": "#F2F1EE" } ],
+    "hair": [ { "name": "乌黑色", "hex": "#1B1918" }, { "name": "蓝黑色", "hex": "#1D2130" }, { "name": "冷深棕", "hex": "#33271F" } ]
+  },
+  "deep-winter": {
+    "name": "深冬", "en": "Deep Winter", "group_en": "WINTER", "accent": "#54324E",
+    "traits": { "warmth": 0.3, "value": 0.22, "chroma": 0.66, "contrast": 0.84 },
+    "essence": "最深邃的冷调、黑白分明的浓颜。怕浅淡柔和的颜色。",
+    "keywords": ["深邃", "锋利", "黑白", "存在感"],
+    "palette": [
+      { "name": "纯黑色", "hex": "#161616", "tag": "本命主色" },
+      { "name": "纯白色", "hex": "#FAFAF8", "tag": "高对比打底" },
+      { "name": "深宝蓝", "hex": "#1F3A8A", "tag": "通勤气场" },
+      { "name": "覆盆子红", "hex": "#A81E4A", "tag": "气色艳色" },
+      { "name": "深紫色", "hex": "#3E2A6B", "tag": "神秘主角" },
+      { "name": "松柏绿", "hex": "#1E4A3A", "tag": "深色变化" },
+      { "name": "正红色", "hex": "#BE1E2E", "tag": "节日气场" },
+      { "name": "炭黑灰", "hex": "#33363A", "tag": "深色百搭" },
+      { "name": "冰灰蓝", "hex": "#C2D2E2", "tag": "浅色点缀" },
+      { "name": "黑莓紫", "hex": "#4A1F44", "tag": "晚宴深色" },
+      { "name": "冷祖母绿", "hex": "#0F6B55", "tag": "高级撞色" },
+      { "name": "酒红色", "hex": "#6B1F2E", "tag": "复古气场" }
+    ],
+    "avoid": [
+      { "name": "浅杏色", "hex": "#F1C7A4", "reason": "浅暖色完全压不住五官" },
+      { "name": "燕麦色", "hex": "#D5C8B2", "reason": "灰浊浅色显得没气场" },
+      { "name": "蜜桃粉", "hex": "#F5A9A0", "reason": "嫩粉和浓颜不兼容" },
+      { "name": "浅卡其", "hex": "#C2B292", "reason": "温吞色让你「隐身」" }
+    ],
+    "lipstick": [
+      { "name": "覆盆子", "hex": "#A81E4A" }, { "name": "黑樱桃", "hex": "#6E1F30" },
+      { "name": "蓝调正红", "hex": "#BE1E32" }, { "name": "深梅子", "hex": "#7E2A50" }
+    ],
+    "metal": { "verdict": "银 · 亮银", "short": "锐利金属配高对比", "coin": "radial-gradient(circle at 32% 28%, #F5F7F9, #C5CBD4 58%, #949EAA)", "desc": "亮银、铂金、黑金属混搭；柔光黄金不适合。" },
+    "gems": [ { "name": "黑曜石", "hex": "#26262A" }, { "name": "红宝石", "hex": "#A81E32" }, { "name": "蓝宝石", "hex": "#1F357E" } ],
+    "hair": [ { "name": "乌黑色", "hex": "#191717" }, { "name": "蓝黑色", "hex": "#1C202E" }, { "name": "深冷棕", "hex": "#30241C" } ]
+  }
+}

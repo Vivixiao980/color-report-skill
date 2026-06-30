@@ -1,0 +1,15 @@
+# 个人照片与生成结果（隐私，不上传）
+test-assets/out/
+test-assets/vivi-sample.jpg
+test-assets/vivi-analysis.json
+*.HEIC
+*.heic
+
+# 依赖与系统文件
+node_modules/
+.DS_Store
+*.log
+
+# 本地配置（含 API Key，绝不上传）
+config.json
+**/config.local.json

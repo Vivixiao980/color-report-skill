@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Personal Color Report</title>
+<style>
+  :root {
+    --paper: #F7F2E9;
+    --panel: #FFFDF8;
+    --ink: #2B2622;
+    --muted: #8C8275;
+    --faint: #B5AB9C;
+    --line: rgba(43, 38, 34, 0.12);
+    --gold: #C2AD84;
+    --accent: #D98E73; /* runtime-replaced */
+    --shadow: 0 10px 34px rgba(57, 43, 28, 0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1440px; overflow: hidden; }
+  body {
+    font-family: "PingFang SC", -apple-system, "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+  }
+  .serif { font-family: "Songti SC", "STSong", "Noto Serif SC", Georgia, serif; }
+  .en { letter-spacing: 0.18em; text-transform: uppercase; }
+
+  .page {
+    position: relative;
+    width: 1080px; height: 1440px;
+    padding: 62px 66px 54px;
+    display: none;
+    flex-direction: column;
+    background:
+      radial-gradient(900px 500px at 88% -6%, color-mix(in srgb, var(--accent) 15%, transparent), transparent 70%),
+      radial-gradient(700px 420px at -10% 104%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 70%),
+      linear-gradient(180deg, #FBF7ED, #F4ECDC);
+  }
+  .page.active { display: flex; }
+  /* 金色证书双线边框 */
+  .page::before {
+    content: ""; position: absolute; inset: 16px; pointer-events: none; z-index: 5;
+    border: 1.5px solid color-mix(in srgb, var(--gold) 85%, #A88D5C); border-radius: 3px;
+  }
+  .page::after {
+    content: ""; position: absolute; inset: 24px; pointer-events: none; z-index: 5;
+    border: 1px solid color-mix(in srgb, var(--gold) 45%, transparent); border-radius: 2px;
+  }
+  .corner { position: absolute; z-index: 6; font-size: 17px; color: var(--gold); line-height: 1; }
+  .corner.tl { left: 30px; top: 28px; } .corner.tr { right: 30px; top: 28px; }
+  .corner.bl { left: 30px; bottom: 28px; } .corner.br { right: 30px; bottom: 28px; }
+
+  /* ============ 公共 ============ */
+  .topbar {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding-bottom: 14px; border-bottom: 1.5px solid var(--ink);
+    box-shadow: 0 4.5px 0 -3px var(--gold);
+  }
+  .topbar .brand { font-size: 17px; font-weight: 600; letter-spacing: 0.22em; }
+  .topbar .meta { font-size: 13px; color: var(--muted); letter-spacing: 0.12em; }
+  .pagefoot {
+    margin-top: auto; padding-top: 14px; border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; color: var(--faint); letter-spacing: 0.1em;
+  }
+  .sec-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+  .sec-title b { font-size: 21px; font-weight: 700; letter-spacing: 0.06em; }
+  .sec-title span { font-size: 11px; color: var(--gold); letter-spacing: 0.2em; }
+  .sec-title::after { content: ""; flex: 1; height: 1px; background: var(--line); transform: translateY(-4px); }
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+
+  /* ============ P1 总览 ============ */
+  .hero { display: flex; gap: 36px; align-items: center; margin: 26px 0 6px; position: relative; }
+  .hero-wm {
+    position: absolute; right: -14px; top: -38px; z-index: 0; pointer-events: none;
+    font-size: 158px; font-weight: 700; font-style: italic; letter-spacing: .04em;
+    color: color-mix(in srgb, var(--accent) 13%, transparent);
+  }
+  .seal {
+    position: absolute; right: 10px; bottom: 4px; z-index: 2;
+    width: 92px; height: 92px; border: 2.5px solid #B2492E; border-radius: 12px;
+    color: #B2492E; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 3px; transform: rotate(-7deg); opacity: .82; background: rgba(255, 253, 248, .4);
+  }
+  .seal b { font-size: 25px; letter-spacing: .14em; }
+  .seal span { font-size: 8.5px; letter-spacing: .22em; }
+  .portrait-wrap { position: relative; flex: none; }
+  .portrait {
+    width: 264px; height: 264px; border-radius: 50%; overflow: hidden; position: relative;
+    box-shadow: var(--shadow);
+  }
+  .portrait img { width: 100%; height: 100%; object-fit: cover; }
+  .portrait-ring {
+    position: absolute; inset: -10px; border-radius: 50%;
+    border: 1.5px solid color-mix(in srgb, var(--accent) 70%, var(--gold));
+  }
+  .portrait-dot {
+    position: absolute; right: 2px; bottom: 14px; width: 52px; height: 52px; border-radius: 50%;
+    background: var(--accent); border: 4px solid var(--paper);
+  }
+  .hero-right { flex: 1; min-width: 0; position: relative; z-index: 1; }
+  .hero-group { font-size: 13px; color: var(--accent); font-weight: 700; letter-spacing: 0.3em; margin-bottom: 6px; }
+  .hero-name { font-size: 84px; font-weight: 700; line-height: 1.06; letter-spacing: 0.02em; }
+  .hero-en { font-size: 15px; color: var(--muted); letter-spacing: 0.34em; margin: 10px 0 14px; }
+  .hero-summary { font-size: 16.5px; line-height: 1.62; color: #4D463E; max-width: 620px; }
+  .hero-pills { display: flex; gap: 10px; margin-top: 16px; }
+  .pill {
+    font-size: 13.5px; padding: 7px 16px; border-radius: 999px; letter-spacing: 0.06em;
+    border: 1px solid var(--line); background: var(--panel); color: #5B5247;
+  }
+  .pill.acc { background: var(--accent); border-color: transparent; color: #fff; font-weight: 600; }
+
+  .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 28px; margin: 20px 0 4px; }
+  .metric { display: grid; grid-template-columns: 52px 1fr 96px; align-items: center; gap: 12px; }
+  .metric .m-label { font-size: 15px; font-weight: 700; }
+  .metric .m-note { font-size: 13px; color: var(--muted); text-align: right; }
+  .m-bar { position: relative; height: 10px; border-radius: 99px; border: 1px solid rgba(43,38,34,.10); }
+  .m-bar .m-ends { position: absolute; top: -19px; left: 0; right: 0; display: flex; justify-content: space-between; font-size: 11px; color: var(--faint); }
+  .m-bar .m-dot {
+    position: absolute; top: 50%; width: 22px; height: 22px; border-radius: 50%;
+    transform: translate(-50%, -50%); background: #fff; border: 5.5px solid var(--ink);
+    box-shadow: 0 2px 6px rgba(0,0,0,.22);
+  }
+  .metric-pad { padding: 24px 26px 18px; }
+
+  .swatch-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+  .swatch .sw-color { height: 100px; border-radius: 10px; border: 1px solid rgba(43,38,34,.10); box-shadow: inset 0 0 0 3px rgba(255,255,255,.35); position: relative; }
+  .swatch .sw-color i {
+    position: absolute; right: 6px; bottom: 5px; font-style: normal; font-size: 9.5px;
+    letter-spacing: .05em; color: rgba(43,38,34,.45); background: rgba(255,255,255,.55);
+    padding: 1px 5px; border-radius: 5px; font-family: "SF Mono", Menlo, monospace;
+  }
+  .swatch .sw-name { font-size: 13.5px; font-weight: 700; margin-top: 7px; }
+  .swatch .sw-tag { font-size: 11.5px; color: var(--muted); margin-top: 1px; }
+
+  .rank-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .rank-col { padding: 16px 18px 13px; }
+  .rank-head { display: flex; align-items: center; gap: 8px; font-size: 14.5px; font-weight: 800; margin-bottom: 10px; letter-spacing: .08em;}
+  .rank-head .sym { width: 21px; height: 21px; border-radius: 50%; color:#fff; font-size: 12.5px; display: flex; align-items: center; justify-content: center; }
+  .rank-items { display: grid; gap: 8px; }
+  .rank-item { display: flex; align-items: center; gap: 10px; font-size: 13.5px; }
+  .rank-item .rc { width: 30px; height: 30px; border-radius: 8px; flex: none; border: 1px solid rgba(43,38,34,.12); }
+  .rank-item b { flex: none; }
+  .rank-item span { color: var(--muted); font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .beauty-row { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 14px; }
+  .beauty-cell { padding: 15px 18px 13px; }
+  .beauty-cell h4 { font-size: 12px; color: var(--muted); letter-spacing: 0.18em; margin-bottom: 9px; font-weight: 600; }
+  .chip-line { display: flex; gap: 9px; align-items: center; flex-wrap: wrap; }
+  .chip { display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 600; }
+  .chip i { width: 26px; height: 26px; border-radius: 50%; border: 1px solid rgba(43,38,34,.14); box-shadow: inset 0 1px 3px rgba(255,255,255,.5); }
+  .metal-verdict { font-size: 26px; font-weight: 800; letter-spacing: .1em; }
+  .metal-sub { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+  .kw-strip {
+    margin-top: 14px; text-align: center; font-size: 26px; letter-spacing: 0.22em; font-weight: 700;
+    color: #4A4138; flex: 1; display: flex; align-items: center; justify-content: center; gap: 22px;
+  }
+  .kw-strip::before, .kw-strip::after { content: ""; width: 72px; height: 1px; background: var(--gold); }
+  .kw-strip em { font-style: normal; color: var(--accent); }
+
+  /* ============ P2 WHY ============ */
+  .p2-head { margin: 28px 0 20px; }
+  .p2-head h1 { font-size: 56px; font-weight: 700; letter-spacing: 0.03em; }
+  .p2-head h1 em { font-style: normal; color: var(--accent); }
+  .p2-head p { margin-top: 10px; font-size: 15px; color: var(--muted); letter-spacing: 0.06em; }
+  .evi-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .evi-card { padding: 20px 20px 17px; }
+  .evi-card h4 { font-size: 12px; color: var(--muted); letter-spacing: 0.2em; margin-bottom: 12px; font-weight: 600; }
+  .evi-main { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .evi-main .big-sw { width: 56px; height: 56px; border-radius: 14px; border: 1px solid rgba(43,38,34,.14); flex: none; }
+  .evi-main .duo { display: flex; gap: 8px; }
+  .evi-main .duo i { width: 42px; height: 56px; border-radius: 10px; border: 1px solid rgba(43,38,34,.14); }
+  .evi-main b { font-size: 21px; letter-spacing: .04em; }
+  .evi-card p { font-size: 13px; line-height: 1.6; color: #5B5247; }
+  .p2-mid { display: grid; grid-template-columns: 480px 1fr; gap: 26px; margin-top: 16px; align-items: stretch; flex: 1; min-height: 0; }
+  .quad-card { padding: 22px; display: flex; flex-direction: column; }
+  .quad-title { font-size: 12px; color: var(--muted); letter-spacing: .2em; margin-bottom: 12px; font-weight: 600;}
+  .quad { position: relative; flex: 1; border-radius: 12px; border: 1px solid var(--line);
+    background:
+      linear-gradient(90deg, rgba(140,170,200,.20), rgba(225,160,120,.20)),
+      linear-gradient(180deg, rgba(255,255,255,.65), rgba(90,75,60,.18));
+  }
+  .quad .axis-x, .quad .axis-y { position: absolute; background: rgba(43,38,34,.18); }
+  .axis-x { left: 4%; right: 4%; top: 50%; height: 1px; }
+  .axis-y { top: 4%; bottom: 4%; left: 50%; width: 1px; }
+  .quad .ax-label { position: absolute; font-size: 12px; color: #6E655A; letter-spacing: .1em; background: rgba(255,253,248,.8); padding: 2px 6px; border-radius: 6px;}
+  .quad .s-dot { position: absolute; width: 15px; height: 15px; border-radius: 50%; transform: translate(-50%,-50%); opacity: .9; border: 1.5px solid rgba(255,255,255,.8); }
+  .quad .s-dot small { position: absolute; left: 50%; top: 16px; transform: translateX(-50%); font-size: 12px; color: #6E655A; white-space: nowrap; letter-spacing: .05em; }
+  .quad-legend { display: flex; justify-content: space-between; margin-top: 14px; padding: 0 4px; }
+  .quad-legend div { display: flex; align-items: center; gap: 7px; font-size: 12.5px; color: #5B5247; letter-spacing: .04em; }
+  .quad-legend i { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(43,38,34,.14); }
+  .quad .me {
+    position: absolute; width: 30px; height: 30px; border-radius: 50%; transform: translate(-50%,-50%);
+    background: var(--accent); border: 5px solid #fff; box-shadow: 0 4px 14px rgba(0,0,0,.3); z-index: 3;
+  }
+  .quad .me::after {
+    content: "你在这里"; position: absolute; left: 50%; top: -34px; transform: translateX(-50%);
+    background: var(--ink); color: #fff; font-size: 12.5px; padding: 4px 10px; border-radius: 8px; white-space: nowrap; letter-spacing: .1em;
+  }
+  .why-col { display: flex; flex-direction: column; gap: 13px; }
+  .why-item { padding: 17px 20px; display: flex; gap: 14px; flex: 1; align-items: center; }
+  .why-item .no { font-family: Georgia, serif; font-size: 30px; color: var(--accent); line-height: 1; flex: none; width: 38px; }
+  .why-item h5 { font-size: 15.5px; margin-bottom: 5px; letter-spacing: .04em; }
+  .why-item p { font-size: 13px; line-height: 1.62; color: #5B5247; }
+  .myth {
+    margin-top: 16px; padding: 17px 22px; border-radius: 14px;
+    background: color-mix(in srgb, var(--accent) 9%, var(--panel));
+    border: 1px dashed color-mix(in srgb, var(--accent) 50%, var(--line));
+    display: flex; gap: 13px; align-items: flex-start;
+  }
+  .myth .ic { font-size: 19px; }
+  .myth b { font-size: 14.5px; display: block; margin-bottom: 4px; }
+  .myth p { font-size: 13px; color: #5B5247; line-height: 1.6; }
+
+  /* ============ P3 上脸对比 ============ */
+  .p3-head { margin: 26px 0 18px; display: flex; align-items: flex-end; justify-content: space-between; }
+  .p3-head h1 { font-size: 52px; font-weight: 700; }
+  .p3-head .sub { font-size: 14px; color: var(--muted); letter-spacing: .12em; text-align: right; line-height: 1.7; }
+  .drape-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; flex: 1; }
+  .drape-cell { border-radius: 16px; overflow: hidden; position: relative; border: 1px solid rgba(43,38,34,.12); display: flex; flex-direction: column; box-shadow: var(--shadow); }
+  .drape-bg { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; }
+  .drape-face {
+    width: 188px; height: 188px; border-radius: 50%; overflow: hidden;
+    box-shadow: 0 12px 30px rgba(0,0,0,.28), 0 0 0 5px rgba(255,255,255,.5);
+  }
+  .drape-face img { width: 100%; height: 100%; object-fit: cover; }
+  .drape-mark {
+    position: absolute; top: 12px; left: 12px; width: 34px; height: 34px; border-radius: 50%;
+    color: #fff; font-size: 17px; font-weight: 800; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 3px 9px rgba(0,0,0,.25);
+  }
+  .drape-label { background: var(--panel); padding: 11px 14px 12px; }
+  .drape-label b { font-size: 15.5px; letter-spacing: .04em; display: block; }
+  .drape-label span { font-size: 12px; color: var(--muted); display: block; margin-top: 2px; }
+  .drape-rowtitle { font-size: 13.5px; font-weight: 800; letter-spacing: .22em; color: var(--muted); margin: 14px 0 9px; display: flex; align-items: center; gap: 10px; }
+  .drape-rowtitle::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  .drape-rowtitle.good { color: #3F6E4F; }
+  .drape-rowtitle.bad { color: #93503F; }
+
+  /* ============ P4 衣橱配饰 ============ */
+  .p4-head { margin: 26px 0 18px; }
+  .p4-head h1 { font-size: 52px; font-weight: 700; }
+  .p4-head p { margin-top: 8px; font-size: 14.5px; color: var(--muted); letter-spacing: .08em; }
+  .outfit-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .outfit { overflow: hidden; }
+  .outfit .o-colors { display: flex; height: 215px; }
+  .outfit .o-colors i { flex: 1; }
+  .outfit .o-body { padding: 13px 17px 14px; }
+  .outfit .o-scene { font-size: 16.5px; font-weight: 800; letter-spacing: .06em; }
+  .outfit .o-note { font-size: 12.5px; color: var(--muted); margin-top: 4px; line-height: 1.55; }
+  .acc-grid { display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 14px; }
+  .acc-cell { padding: 24px 22px 20px; }
+  .acc-cell h4 { font-size: 12px; color: var(--muted); letter-spacing: .2em; margin-bottom: 11px; font-weight: 600; }
+  .lip-row { display: flex; gap: 14px; }
+  .lip { text-align: center; }
+  .lip i { display: block; width: 52px; height: 66px; border-radius: 26px 26px 10px 10px; border: 1px solid rgba(43,38,34,.14); margin: 0 auto 6px; box-shadow: inset -6px -8px 14px rgba(0,0,0,.12), inset 4px 6px 10px rgba(255,255,255,.35); }
+  .lip b { font-size: 12px; display: block; }
+  .metal-big { display: flex; align-items: center; gap: 14px; }
+  .metal-coin { width: 58px; height: 58px; border-radius: 50%; border: 1px solid rgba(43,38,34,.16); box-shadow: inset -6px -8px 12px rgba(0,0,0,.18), inset 5px 6px 10px rgba(255,255,255,.55); flex: none; }
+  .metal-big b { font-size: 23px; letter-spacing: .06em; display: block; }
+  .metal-big span { font-size: 12px; color: var(--muted); display: block; margin-top: 3px; line-height: 1.5; }
+  .gem-line { display: flex; gap: 9px; margin-top: 12px; }
+  .gem { display: flex; align-items: center; gap: 5px; font-size: 11.5px; color: #5B5247; }
+  .gem i { width: 18px; height: 18px; border-radius: 50% 50% 50% 4px; border: 1px solid rgba(43,38,34,.16); }
+  .hairc-row { display: flex; gap: 12px; }
+  .hairc { text-align: center; }
+  .hairc i { display: block; width: 56px; height: 56px; border-radius: 50% 50% 42% 42%; border: 1px solid rgba(43,38,34,.16); margin: 0 auto 6px; box-shadow: inset 0 -10px 16px rgba(0,0,0,.22), inset 0 8px 10px rgba(255,255,255,.18); }
+  .hairc b { font-size: 12px; }
+  .tags-card { padding: 18px 22px 16px; }
+  .tags-wrap { display: flex; flex-wrap: wrap; gap: 9px; }
+  .tag {
+    font-size: 13.5px; padding: 8px 16px; border-radius: 999px; letter-spacing: .04em;
+    background: var(--panel); border: 1px solid var(--line); color: #4D463E;
+  }
+  .tag.hot { background: color-mix(in srgb, var(--accent) 14%, var(--panel)); border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); color: color-mix(in srgb, var(--accent) 75%, var(--ink)); font-weight: 600; }
+  .gap8 { height: 8px; } .gap12 { height: 12px; } .gap14 { height: 14px; } .gap16 { height: 16px; } .gap20 { height: 20px; }
+</style>
+</head>
+<body>
+<div id="p1" class="page"></div>
+<div id="p2" class="page"></div>
+<div id="p3" class="page"></div>
+<div id="p4" class="page"></div>
+
+<script>
+const DATA = __DATA_JSON__;
+const PHOTO = "__PHOTO_DATAURI__";
+
+const SEASON_POS = {
+  "bright-spring": [0.70, 0.42], "warm-spring": [0.84, 0.34], "light-spring": [0.68, 0.16],
+  "light-summer": [0.34, 0.14], "cool-summer": [0.16, 0.36], "soft-summer": [0.38, 0.46],
+  "soft-autumn": [0.62, 0.56], "warm-autumn": [0.86, 0.62], "deep-autumn": [0.72, 0.84],
+  "deep-winter": [0.30, 0.86], "cool-winter": [0.14, 0.64], "bright-winter": [0.26, 0.58]
+};
+const SEASON_DOT_COLOR = {
+  "bright-spring": "#F2A552", "warm-spring": "#E8924F", "light-spring": "#F4BC8A",
+  "light-summer": "#BFD3E6", "cool-summer": "#8FAECD", "soft-summer": "#A9B4C2",
+  "soft-autumn": "#C9A075", "warm-autumn": "#B47B3F", "deep-autumn": "#7E5430",
+  "deep-winter": "#4A3C55", "cool-winter": "#6E7FB2", "bright-winter": "#A24A66"
+};
+const SEASON_SHORT = {
+  "bright-spring": "亮春", "warm-spring": "暖春", "light-spring": "浅春",
+  "light-summer": "浅夏", "cool-summer": "冷夏", "soft-summer": "柔夏",
+  "soft-autumn": "柔秋", "warm-autumn": "暖秋", "deep-autumn": "深秋",
+  "deep-winter": "深冬", "cool-winter": "冷冬", "bright-winter": "亮冬"
+};
+
+document.documentElement.style.setProperty("--accent", DATA.season.accent);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const crop = DATA.face_crop || { cx: 50, cy: 42, zoom: 1.4 };
+const faceImg = extra => `<img src="${PHOTO}" style="object-position:${crop.cx}% ${crop.cy}%;transform:scale(${crop.zoom});transform-origin:${crop.cx}% ${crop.cy}%;${extra||""}">`;
+
+function topbar(no) {
+  return `<span class="corner tl">✦</span><span class="corner tr">✦</span><span class="corner bl">✦</span><span class="corner br">✦</span>
+  <div class="topbar">
+    <div class="brand en">Personal Color Analysis<span style="color:var(--gold)"> · 个人色彩诊断报告</span></div>
+    <div class="meta en">NO.${esc(DATA.meta.report_no)} · ${esc(DATA.meta.date)} · PAGE 0${no}/04</div>
+  </div>`;
+}
+function pagefoot(left) {
+  return `<div class="pagefoot"><span>${esc(left)}</span><span class="en">AI Personal Color Lab · Keep & Share</span></div>`;
+}
+
+/* ---------- P1 ---------- */
+function renderP1() {
+  const s = DATA.season, m = DATA.metrics;
+  const metricRow = mm => `<div class="metric">
+      <div class="m-label">${esc(mm.label)}</div>
+      <div class="m-bar" style="background:linear-gradient(90deg, ${mm.bar[0]}, ${mm.bar[1]})">
+        <div class="m-ends"><span>${esc(mm.left)}</span><span>${esc(mm.right)}</span></div>
+        <div class="m-dot" style="left:${mm.value * 100}%"></div>
+      </div>
+      <div class="m-note">${esc(mm.note)}</div>
+    </div>`;
+  const sw = c => `<div class="swatch"><div class="sw-color" style="background:${c.hex}"><i>${esc(c.hex.toUpperCase())}</i></div>
+      <div class="sw-name">${esc(c.name)}</div><div class="sw-tag">${esc(c.tag)}</div></div>`;
+  const rank = (it, good) => `<div class="rank-item"><i class="rc" style="background:${it.hex}"></i><b>${esc(it.name)}</b><span>${esc(it.reason)}</span></div>`;
+  document.getElementById("p1").innerHTML = `
+    ${topbar(1)}
+    <div class="hero">
+      <div class="hero-wm serif">${esc(s.group_en)}</div>
+      <div class="seal serif"><b>认证</b><span>CERTIFIED</span><span>12-TYPE</span></div>
+      <div class="portrait-wrap">
+        <div class="portrait">${faceImg()}</div>
+        <div class="portrait-ring"></div><div class="portrait-dot"></div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-group en">${esc(s.group_en)} TYPE · 四季色彩 12 型</div>
+        <div class="hero-name serif">${esc(s.name)}</div>
+        <div class="hero-en en">${esc(s.en)}</div>
+        <div class="hero-summary">${esc(s.summary)}</div>
+        <div class="hero-pills">
+          <div class="pill acc">季型匹配度 ${Math.round(DATA.person.confidence * 100)}%</div>
+          ${s.tags.map(t => `<div class="pill">${esc(t)}</div>`).join("")}
+        </div>
+      </div>
+    </div>
+    <div class="card metric-pad"><div class="metrics">${m.map(metricRow).join("")}</div></div>
+    <div class="gap16"></div>
+    <div class="sec-title"><b class="serif">本命色盘</b><span class="en">Best Palette · 12 Colors</span></div>
+    <div class="swatch-grid">${DATA.palette.slice(0, 12).map(sw).join("")}</div>
+    <div class="gap16"></div>
+    <div class="rank-row">
+      <div class="card rank-col">
+        <div class="rank-head"><span class="sym" style="background:#3F6E4F">✓</span>最显白 TOP3</div>
+        <div class="rank-items">${DATA.ranking.best.map(it => rank(it, true)).join("")}</div>
+      </div>
+      <div class="card rank-col">
+        <div class="rank-head"><span class="sym" style="background:#93503F">✕</span>最易踩雷 TOP3</div>
+        <div class="rank-items">${DATA.ranking.worst.map(it => rank(it, false)).join("")}</div>
+      </div>
+    </div>
+    <div class="gap14"></div>
+    <div class="beauty-row">
+      <div class="card beauty-cell"><h4 class="en">Lip Shades · 口红色号方向</h4>
+        <div class="chip-line">${DATA.beauty.lipstick.map(l => `<div class="chip"><i style="background:${l.hex}"></i>${esc(l.name)}</div>`).join("")}</div>
+      </div>
+      <div class="card beauty-cell"><h4 class="en">Metal · 金属配饰</h4>
+        <div class="metal-verdict">${esc(DATA.beauty.metal.verdict)}</div>
+        <div class="metal-sub">${esc(DATA.beauty.metal.short)}</div>
+      </div>
+      <div class="card beauty-cell"><h4 class="en">Hair Color · 发色方向</h4>
+        <div class="chip-line">${DATA.beauty.hair_colors.map(h => `<div class="chip"><i style="background:${h.hex}"></i>${esc(h.name)}</div>`).join("")}</div>
+      </div>
+    </div>
+    <div class="kw-strip serif">「 ${DATA.season.keywords.map(k => `<em>${esc(k)}</em>`).join(" · ")} 」</div>
+    ${pagefoot(DATA.person.photo_quality_note)}
+  `;
+}
+
+/* ---------- P2 ---------- */
+function renderP2() {
+  const e = DATA.evidence;
+  const dots = Object.entries(SEASON_POS).map(([id, [x, y]]) => {
+    if (id === DATA.season.id) return "";
+    return `<div class="s-dot" style="left:${x*100}%;top:${y*100}%;background:${SEASON_DOT_COLOR[id]}"><small>${SEASON_SHORT[id]}</small></div>`;
+  }).join("");
+  const [mx, my] = SEASON_POS[DATA.season.id] || [DATA.position.x, DATA.position.y];
+  document.getElementById("p2").innerHTML = `
+    ${topbar(2)}
+    <div class="p2-head">
+      <h1 class="serif">为什么你是 <em>${esc(DATA.season.name)}</em> ？</h1>
+      <p class="en">The Evidence Behind Your Season — 从你的照片里读出的三个信号</p>
+    </div>
+    <div class="evi-row">
+      <div class="card evi-card"><h4 class="en">01 · Skin Undertone 肤色基调</h4>
+        <div class="evi-main"><i class="big-sw" style="background:${e.skin.hex}"></i><b class="serif">${esc(e.skin.label)}</b></div>
+        <p>${esc(e.skin.desc)}</p>
+      </div>
+      <div class="card evi-card"><h4 class="en">02 · Hair & Eyes 发色与瞳色</h4>
+        <div class="evi-main"><div class="duo"><i style="background:${e.hair.hex}"></i><i style="background:${e.eye.hex}"></i></div><b class="serif">${esc(e.hair.label)}</b></div>
+        <p>${esc(e.hair.desc)}</p>
+      </div>
+      <div class="card evi-card"><h4 class="en">03 · Contrast 五官对比度</h4>
+        <div class="evi-main"><i class="big-sw" style="background:linear-gradient(135deg, ${e.skin.hex} 50%, ${e.hair.hex} 50%)"></i><b class="serif">${esc(e.contrast.label)}</b></div>
+        <p>${esc(e.contrast.desc)}</p>
+      </div>
+    </div>
+    <div class="p2-mid">
+      <div class="card quad-card">
+        <div class="quad-title en">Season Map · 你在十二季型坐标上的位置</div>
+        <div class="quad">
+          <div class="axis-x"></div><div class="axis-y"></div>
+          <div class="ax-label" style="left:8px;top:calc(50% - 11px)">冷 COOL</div>
+          <div class="ax-label" style="right:8px;top:calc(50% - 11px)">暖 WARM</div>
+          <div class="ax-label" style="left:calc(50% - 30px);top:6px">浅 LIGHT</div>
+          <div class="ax-label" style="left:calc(50% - 30px);bottom:6px">深 DEEP</div>
+          ${dots}
+          <div class="me" style="left:${mx*100}%;top:${my*100}%"></div>
+        </div>
+        <div class="quad-legend">
+          <div><i style="background:#E8A573"></i>春 · 暖而清</div>
+          <div><i style="background:#9DB8D4"></i>夏 · 冷而柔</div>
+          <div><i style="background:#B5703B"></i>秋 · 暖而浓</div>
+          <div><i style="background:#4A5FA5"></i>冬 · 冷而锐</div>
+        </div>
+      </div>
+      <div class="why-col">
+        ${e.why.map((w, i) => `<div class="card why-item"><div class="no serif">0${i+1}</div><div><h5>${esc(w.title)}</h5><p>${esc(w.desc)}</p></div></div>`).join("")}
+        <div class="myth"><div class="ic">💡</div><div><b>${esc(e.myth.title)}</b><p>${esc(e.myth.desc)}</p></div></div>
+      </div>
+    </div>
+    ${pagefoot("季型坐标基于本次照片的肤色 · 发瞳色 · 对比度三项联合判断")}
+  `;
+}
+
+/* ---------- P3 ---------- */
+function renderP3() {
+  const cell = (d, good) => `
+    <div class="drape-cell">
+      <div class="drape-bg" style="background:linear-gradient(160deg, ${d.hex}, color-mix(in srgb, ${d.hex} 82%, ${good ? "#ffffff" : "#000000"}))">
+        <div class="drape-mark" style="background:${good ? "#3F6E4F" : "#93503F"}">${good ? "✓" : "✕"}</div>
+        <div class="drape-face">${faceImg()}</div>
+      </div>
+      <div class="drape-label"><b>${esc(d.name)}</b><span>${esc(d.note)}</span></div>
+    </div>`;
+  document.getElementById("p3").innerHTML = `
+    ${topbar(3)}
+    <div class="p3-head">
+      <h1 class="serif">上脸实测</h1>
+      <div class="sub en">Same Face, Different Colors<br>同一张脸 · 只换颜色 · 看显白还是显沉</div>
+    </div>
+    <div class="drape-rowtitle good">✓ 这些颜色在帮你 — ${esc(DATA.season.name)}本命色</div>
+    <div class="drape-grid" style="flex:1">${DATA.drape.best.slice(0,3).map(d => cell(d, true)).join("")}</div>
+    <div class="drape-rowtitle bad">✕ 这些颜色在拖后腿 — 同一张脸立刻显沉</div>
+    <div class="drape-grid" style="flex:1">${DATA.drape.worst.slice(0,3).map(d => cell(d, false)).join("")}</div>
+    ${pagefoot("色布为数码模拟 · 实际效果受光线与面料质感影响 · 建议存图到店比对")}
+  `;
+}
+
+/* ---------- P4 ---------- */
+function renderP4() {
+  const b = DATA.beauty;
+  document.getElementById("p4").innerHTML = `
+    ${topbar(4)}
+    <div class="p4-head">
+      <h1 class="serif">衣橱公式 & 配饰清单</h1>
+      <p class="en">Wardrobe Formulas & Accessories — 直接抄作业，购物时对照</p>
+    </div>
+    <div class="outfit-row">
+      ${DATA.outfits.map(o => `<div class="card outfit">
+        <div class="o-colors">${o.colors.map(c => `<i style="background:${c}"></i>`).join("")}</div>
+        <div class="o-body"><div class="o-scene">${esc(o.scene)}</div><div class="o-note">${esc(o.note)}</div></div>
+      </div>`).join("")}
+    </div>
+    <div class="gap14"></div>
+    <div class="acc-grid">
+      <div class="card acc-cell"><h4 class="en">Lipstick · 口红色号方向</h4>
+        <div class="lip-row">${b.lipstick.map(l => `<div class="lip"><i style="background:linear-gradient(160deg, color-mix(in srgb, ${l.hex} 85%, #fff), ${l.hex})"></i><b>${esc(l.name)}</b></div>`).join("")}</div>
+      </div>
+      <div class="card acc-cell"><h4 class="en">Jewelry · 首饰金属</h4>
+        <div class="metal-big">
+          <i class="metal-coin" style="background:${b.metal.coin}"></i>
+          <div><b class="serif">${esc(b.metal.verdict)}</b><span>${esc(b.metal.desc)}</span></div>
+        </div>
+        <div class="gem-line">${(b.gems||[]).map(g => `<div class="gem"><i style="background:${g.hex}"></i>${esc(g.name)}</div>`).join("")}</div>
+      </div>
+      <div class="card acc-cell"><h4 class="en">Hair · 发色方向</h4>
+        <div class="hairc-row">${b.hair_colors.map(h => `<div class="hairc"><i style="background:${h.hex}"></i><b>${esc(h.name)}</b></div>`).join("")}</div>
+      </div>
+    </div>
+    <div class="gap14"></div>
+    <div class="card tags-card"><h4 class="en" style="font-size:12px;color:var(--muted);letter-spacing:.2em;margin-bottom:11px;font-weight:600">Shopping Keywords · 购物搜索关键词</h4>
+      <div class="tags-wrap">${DATA.shopping_keywords.map((k, i) => `<div class="tag ${i < 3 ? "hot" : ""}">${esc(k)}</div>`).join("")}</div>
+    </div>
+    <div class="gap14"></div>
+    <div class="card tags-card"><h4 class="en" style="font-size:12px;color:var(--muted);letter-spacing:.2em;margin-bottom:11px;font-weight:600">Quick Palette · 本命色速查条（截屏当对照卡）</h4>
+      <div style="display:flex;gap:7px">${DATA.palette.slice(0, 12).map(c => `<div style="flex:1;min-width:0"><div style="height:68px;border-radius:9px;background:${c.hex};border:1px solid rgba(43,38,34,.10)"></div><div style="font-size:10.5px;color:var(--muted);text-align:center;margin-top:5px;white-space:nowrap">${esc(c.name)}</div></div>`).join("")}</div>
+    </div>
+    <div class="kw-strip serif" style="font-size:21px">把这页存进相册 · 购物时拿出来对一对</div>
+    ${pagefoot("推荐基于季型通用规律 · 单品试穿仍以镜前实际效果为准")}
+  `;
+}
+
+const page = parseInt(new URLSearchParams(location.search).get("page") || "1", 10);
+[renderP1, renderP2, renderP3, renderP4][page - 1]();
+document.getElementById("p" + page).classList.add("active");
+</script>
+</body>
+</html>
