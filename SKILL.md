@@ -36,6 +36,24 @@ metadata:
 
 ---
 
+## 运行模式（重要：先判断当前环境）
+
+本 skill 出图有两条等价路径，**先看你在哪个环境**：
+
+### A. 有内置图像生成的环境（如 Codex）→ 不跑生图脚本，直接用内置生图
+- **不要**调用 `generate-report.mjs / generate-portrait.mjs / generate-idphoto.mjs`（那是给无内置生图的环境调外部 API 用的）。
+- 改为：读 [`assets/prompts.md`](assets/prompts.md) 里的提示词模板 → 从 analysis.json 填占位符 → 把用户照片作为输入图 → **调用内置图像生成工具**直接出图。两条路用的是同一套提示词，结果一致。
+- 测色脚本 `analyze-color.mjs` 仍照常跑（纯计算，无外部 API）；没有 sharp 时可用内置视觉能力按 prompts.md 的维度估测。
+- 无需配置任何 API Key（内置生图自带）。
+
+### B. 无内置生图的环境（如 Claude Code）→ 跑脚本调外部图像 API
+- 走下方 Step 0 Onboarding 配置图像 API，再用 `scripts/generate-*.mjs` 出图（脚本内置同一套提示词）。
+- 图像服务不可用时回退 HTML 兜底（`render.mjs`）。
+
+> 一句话：**Codex 用内置生图 + prompts.md；Claude Code 用脚本 + 外部 API。** 提示词同源，季型知识库（seasons.json）和测色（analyze-color.mjs）两条路共用。
+
+---
+
 ## 0. Onboarding（首次使用，给用户的话术）
 
 触发后若 `~/.config/color-report/config.json` 和 `~/.config/exec-headshot/config.json` 都不存在，先引导配置图像生成 API：
@@ -105,6 +123,10 @@ node ${SKILL_DIR}/scripts/analyze-color.mjs --photo /路径/照片.jpg --json
 - metrics 固定 4 条；meta.report_no=`VC-日期`
 
 **出图（默认全生图，5 页统一韩式诊断书视觉）**：
+
+> 🅐 **Codex 等有内置生图的环境**：不跑下面的脚本，改读 [`assets/prompts.md`](assets/prompts.md) 填占位符 + 用照片做输入图 + 调内置生图。
+> 🅑 **Claude Code 等无内置生图**：跑脚本调外部 API ↓
+
 ```bash
 node ${SKILL_DIR}/scripts/generate-report.mjs \
   --data analysis.json --photo 照片.jpg --out ~/Desktop/色彩报告/昵称 \
